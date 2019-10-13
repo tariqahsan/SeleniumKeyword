@@ -1,8 +1,0 @@
-org\isb\training\selenium\Driver.class
-org\isb\training\selenium\RunTest.class
-org\isb\training\selenium\ConfigFileReader.class
-org\isb\training\selenium\Automation.class
-org\isb\training\selenium\ApachePOIExcelWrite.class
-org\isb\training\selenium\CommonFunctionsLib.class
-org\isb\training\selenium\ApachePOIExcelRead.class
-org\isb\training\selenium\ExcelSheetDriver.class
