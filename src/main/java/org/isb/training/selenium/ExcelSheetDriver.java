@@ -11,19 +11,20 @@ import jxl.Workbook;
 import jxl.read.biff.BiffException;
 
 public class ExcelSheetDriver {
+	
 	Sheet worksheet; // declaring a variable name as worksheet
 	Workbook workbook = null; // declaring a variable name as workbook
 	Hashtable<Object, Object> dict = new Hashtable<Object, Object>();
-//Logger is for displaying Log output in the console and log file
+	//Logger is for displaying Log output in the console and log file
 	Logger logger = Logger.getLogger("ExcelSheetDriver");
-	
+
 	public Sheet getWorksheet(String WorkbookPath, String sheetname) throws BiffException, IOException {
 		//Initialize
 		workbook= Workbook.getWorkbook(new File(WorkbookPath));
 		worksheet= workbook.getSheet(sheetname);
 		return worksheet;
 	}
-	
+
 	//Returns the Number of Rows
 	public int rowCount()
 	{
@@ -35,14 +36,14 @@ public class ExcelSheetDriver {
 	{
 		return worksheet.getColumns();
 	}
-	
+
 	//Returns the Cell value by taking row and Column values as argument
-		public String readCell(Sheet sheet,int column,int row)
-		{
-			return sheet.getCell(column,row).getContents();
-		}
-		
-		public void closeworkbook() {
-			workbook.close();
-		}
+	public String readCell(Sheet sheet, int column, int row)
+	{
+		return sheet.getCell(column,row).getContents();
+	}
+
+	public void closeworkbook() {
+		workbook.close();
+	}
 }

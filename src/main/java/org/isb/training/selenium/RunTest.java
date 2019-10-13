@@ -25,7 +25,7 @@ import org.isb.training.selenium.CommonFunctionsLib;
 
 public class RunTest {
 	
-	final static Logger logger = Logger.getLogger(Automation.class);
+	final static Logger logger = Logger.getLogger(RunTest.class);
 	private WebDriver webDriver;
     Driver driver;
 
@@ -115,7 +115,8 @@ public class RunTest {
 								
 //								logger.info("Executing performActions Method with the three arguments -" + keywordTestSteps + " " + value + " "+  element);
 								System.out.println("Executing performActions Method with the three arguments -" + "keyword :" + keywordTestSteps + " " + "Value: " + value + " "+ "element: " + element);
-								comlib.performActions(keywordTestSteps, value, element);
+								boolean result = comlib.performActions(keywordTestSteps, value, element);
+								System.out.println("RESULT -> " + result);
 							}
 
 						}
