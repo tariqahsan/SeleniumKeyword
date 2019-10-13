@@ -31,7 +31,7 @@ public class CommonFunctionsLib {
 				logger.info("Click is performed sucessfully");
 				result = true;
 			} catch (Exception e) {
-				logger.error("Not able to upload file : " + e.getMessage());
+				logger.error("Click operation was not done successfully : " + e.getMessage());
 				result = false;
 			}
 			return result;
@@ -52,7 +52,7 @@ public class CommonFunctionsLib {
 			dropDown.selectByVisibleText(value);
 			result = true;
 			} catch (Exception e) {
-				logger.error("Not able to upload file : " + e.getMessage());
+				logger.error("dropdown selection was not done successfully : " + e.getMessage());
 				result = false;
 			}
 			return result;
@@ -94,7 +94,7 @@ public class CommonFunctionsLib {
 				
 				result = true;
 			} catch (Exception e) {
-				logger.error("Not able to upload file : " + e.getMessage());
+				logger.error("radio button selection was not done successfully : " + e.getMessage());
 				result = false;
 			}
 			return result;
@@ -117,7 +117,7 @@ public class CommonFunctionsLib {
 			logger.info("getText is performed sucessfully");
 			result = true;
 			} catch (Exception e) {
-				logger.error("Not able to upload file : " + e.getMessage());
+				logger.error("getText is not performed sucessfully : " + e.getMessage());
 				result = false;
 			}
 			return result;
@@ -127,7 +127,7 @@ public class CommonFunctionsLib {
 				logger.info("Url is opened sucessfully");
 			result = true;
 			} catch (Exception e) {
-				logger.error("Not able to upload file : " + e.getMessage());
+				logger.error("Url could not opened sucessfully : " + e.getMessage());
 				result = false;
 			}
 			return result;
@@ -137,7 +137,7 @@ public class CommonFunctionsLib {
 				logger.info("Browser is closed sucessfully");
 				result = true;
 			} catch (Exception e) {
-				logger.error("Not able to upload file : " + e.getMessage());
+				logger.error("Browser is not been closed sucessfully : " + e.getMessage());
 				result = false;
 			}
 			return result;
@@ -160,7 +160,7 @@ public class CommonFunctionsLib {
 				logger.info("sleep is done sucessfully");
 				result = true;
 			} catch (Exception e) {
-				logger.error("Not able to upload file : " + e.getMessage());
+				logger.error("Not able to do sleep successfully : " + e.getMessage());
 				result = false;
 			}
 			return result;
