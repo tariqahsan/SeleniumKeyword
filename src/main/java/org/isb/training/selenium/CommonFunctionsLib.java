@@ -1,11 +1,9 @@
 package org.isb.training.selenium;
 
-import java.util.List;
 import java.util.concurrent.TimeUnit;
 
 import org.apache.log4j.Logger;
 import org.openqa.selenium.By;
-import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.interactions.Actions;
@@ -37,59 +35,7 @@ public class CommonFunctionsLib {
 			Select dropDown = new Select(driver.findElement(By.xpath(element)));
 			dropDown.selectByVisibleText(value);
 
-		} else if (keyword.equalsIgnoreCase("Radio-Male")) {
-
-			// Identifying Male radio button using its ID as an locator
-			WebElement maleRadioBtn = driver.findElement(By.id(element));
-
-			// Checking if the Male Radio button is displayed on the Webpage and printing the status
-			boolean radioBtnIsDisplayed = maleRadioBtn.isDisplayed();
-			System.out.println("Is Male radio button displayed: "+radioBtnIsDisplayed);
-
-			// Checking if the Male Radio button is enabled on the webpage and printing the status
-			boolean radioBtnIsEnabled = maleRadioBtn.isEnabled();
-			System.out.println("Is Male radio button enabled: "+radioBtnIsEnabled);
-
-			// Checking the default radio button selection status
-			boolean radioBtnIsSelected = maleRadioBtn.isSelected();
-			System.out.println("Default Radio button selection Status: "+radioBtnIsSelected);
-
-			// Selecting male radio button
-			maleRadioBtn.click();
-			// Re-checking the male radio button selection status and printing it..
-
-			boolean radioBtnNewSelectionStatus = maleRadioBtn.isSelected();
-			System.out.println("Male radio Selection status after perform click() event: "+radioBtnNewSelectionStatus);
-			
-			return true;
-			
-		} else if (keyword.equalsIgnoreCase("Radio-Female")) {
-
-			// Identifying Male radio button using its ID as an locator
-			WebElement maleRadioBtn = driver.findElement(By.id(element));
-
-			// Checking if the Male Radio button is displayed on the Webpage and printing the status
-			boolean radioBtnIsDisplayed = maleRadioBtn.isDisplayed();
-			System.out.println("Is Female radio button displayed: " + radioBtnIsDisplayed);
-
-			// Checking if the Male Radio button is enabled on the webpage and printing the status
-			boolean radioBtnIsEnabled = maleRadioBtn.isEnabled();
-			System.out.println("Is Female radio button enabled: " + radioBtnIsEnabled);
-
-			// Checking the default radio button selection status
-			boolean radioBtnIsSelected = maleRadioBtn.isSelected();
-			System.out.println("Default Radio button selection Status: "+radioBtnIsSelected);
-
-			// Selecting male radio button
-			maleRadioBtn.click();
-
-			// Re-checking the male radio button selection status and printing it..
-			boolean radioBtnNewSelectionStatus = maleRadioBtn.isSelected();
-			System.out.println("Male radio Selection status after perform click() event: "+radioBtnNewSelectionStatus);
-			
-			return true;
-
-		} else if (keyword.equalsIgnoreCase("Radio-exp")) {		
+		} else if (keyword.equalsIgnoreCase("radio")) {		
 
 			// To prevent the error occuring during execution - 
 			// unknown error: Element <input id="exp-1" name="exp" type="radio" value="2"> is not clickable at point (277, 660)...
@@ -128,7 +74,7 @@ public class CommonFunctionsLib {
 			
 		} else if (keyword.equalsIgnoreCase("upload")) {
 			System.out.println("in upload file ...");
-			driver.findElement(By.id(element)).sendKeys(System.getProperty("user.dir") + "/TestCases/Allah.jpg");
+			driver.findElement(By.id(element)).sendKeys(System.getProperty("user.dir") + value);
 			System.out.println("upload is performed sucessfully ...");
 			logger.info("upload is performed sucessfully");
 			return true;

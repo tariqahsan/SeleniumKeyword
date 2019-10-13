@@ -23,10 +23,11 @@ import org.isb.training.selenium.Driver;
 import org.isb.training.selenium.CommonFunctionsLib;
 
 
-public class LoadTest2 {
+public class RunTest {
 	
 	final static Logger logger = Logger.getLogger(Automation.class);
-	private WebDriver driver;
+	private WebDriver webDriver;
+    Driver driver;
 
 	@BeforeClass
 	public void beforeClass() {
@@ -35,19 +36,18 @@ public class LoadTest2 {
 		System.setProperty("webdriver.chrome.driver", "./webdriver/chromedriver.exe");
 		// driver=new FirefoxDriver();
 //		driver = new ChromeDriver();
-		driver = new ChromeDriver();
+		driver = new Driver();
 	}
 
 	@AfterClass
 	public void afterClass() {
-		driver.quit();
+		webDriver.quit();
 	}
 
 	@Test
 	public void verifySearchButton() throws BiffException, IOException, NumberFormatException, InterruptedException {
 
-		// creating class object Driver  
-		Driver d = new Driver();  
+
 		// creating class object for configFileReader 
 		ConfigFileReader configFileReader = new ConfigFileReader();
 		ExcelSheetDriver excelSheetDriver = new ExcelSheetDriver();
@@ -96,8 +96,8 @@ public class LoadTest2 {
 						Sheet testStepsheet = excelSheetDriver2.getWorksheet(configFileReader.getTestStepsPath(), Description);
 						int rowTestSteps = excelSheetDriver2.rowCount();   // row count =44
 						int columnTestSteps = excelSheetDriver2.columnCount();  // column counts=6
-						WebDriver driver = d.InitateDriver();
-						CommonFunctionsLib comlib = new CommonFunctionsLib(driver);
+						webDriver = driver.InitateDriver();
+						CommonFunctionsLib comlib = new CommonFunctionsLib(webDriver);
 						for(int w = 1; w < rowTestSteps; w++)
 						{
 							String snoTestSteps = excelSheetDriver.readCell(testStepsheet,0, w);
