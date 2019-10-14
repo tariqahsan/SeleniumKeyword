@@ -21,7 +21,6 @@ import org.isb.training.selenium.Driver;
 import org.isb.training.selenium.config.Constants;
 import org.isb.training.selenium.CommonFunctionsLib;
 
-
 public class RunTest {
 
 	final static Logger logger = Logger.getLogger(RunTest.class);

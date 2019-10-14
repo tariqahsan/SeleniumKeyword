@@ -30,6 +30,12 @@ public class ConfigFileReader {
 		}		
 	}
 	
+	public String getBrowser(){
+		String browser = properties.getProperty("browser");// name has to be the same as in configuration properties files
+		if(browser!= null) return browser;
+		else throw new RuntimeException("browser not specified in the configuration.properties file.");		
+	}
+	
 	public String getDriverPath(){
 		String driverPath = properties.getProperty("driverPath");// name has to be the same as in configuration properties files
 		if(driverPath!= null) return driverPath;
