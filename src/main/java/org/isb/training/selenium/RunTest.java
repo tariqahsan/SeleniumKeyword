@@ -24,7 +24,7 @@ import org.isb.training.selenium.CommonFunctionsLib;
 public class RunTest {
 
 	final static Logger logger = Logger.getLogger(RunTest.class);
-	public static boolean result;
+	public static Result result;
 	static XSSFWorkbook workbook;
 	static XSSFSheet sheet;
 	Map<String, Object[]> data;
@@ -47,7 +47,7 @@ public class RunTest {
 		// This data needs to be written (Object[]) 
 		data = new TreeMap<String, Object[]>(); 
 		// Header
-		data.put("1", new Object[]{ "Test Step Case Number", "Test Step Description", "Element", "Value", "Keyword", "Test Result"}); 
+		data.put("1", new Object[]{ "Test Step Case Number", "Test Step Description", "Element", "Value", "Keyword", "Test Result", "Test Result Description"}); 
 	}
 
 	@AfterClass
@@ -121,11 +121,11 @@ public class RunTest {
 								logger.info("Executing performActions Method with the three arguments -" + keywordTestSteps + " " + value + " "+  element);
 								System.out.println("Executing performActions Method with the three arguments -" + "keyword :" + keywordTestSteps + " " + "Value: " + value + " "+ "element: " + element);
 								result = comlib.performActions(keywordTestSteps, value, element);
-								if(result == true){
-									data.put(Integer.toString(w), new Object[]{ snoTestSteps, desTestSteps, element, value, keywordTestSteps, Constants.KEYWORD_PASS }); 
+								if(result.isResult() == true){
+									data.put(Integer.toString(w), new Object[]{ snoTestSteps, desTestSteps, element, value, keywordTestSteps, Constants.KEYWORD_PASS, result.getMessage() }); 
 									writeToExcel(data);
 								} else {
-									data.put(Integer.toString(w), new Object[]{ snoTestSteps, desTestSteps, element, value, keywordTestSteps, Constants.KEYWORD_FAIL }); 
+									data.put(Integer.toString(w), new Object[]{ snoTestSteps, desTestSteps, element, value, keywordTestSteps, Constants.KEYWORD_FAIL, result.getMessage() }); 
 									writeToExcel(data);
 								}
 							}

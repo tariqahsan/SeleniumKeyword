@@ -14,35 +14,41 @@ import org.openqa.selenium.support.ui.Select;
 public class CommonFunctionsLib {
 
 	final static Logger logger = Logger.getLogger(CommonFunctionsLib.class);
-	private boolean result;
-	WebDriver driver;
+	private Result result;
+	private WebDriver driver;
 
-	CommonFunctionsLib(WebDriver driver) {
+	public CommonFunctionsLib(WebDriver driver) {
 		this.driver = driver;
 	}
 
-	public boolean performActions(String keyword, String value, String element)
+	public Result performActions(String keyword, String value, String element)
 			throws NumberFormatException, InterruptedException {
 		logger.info("keyword: " +  keyword + " value: " + value + " element:  " + element);
-		
+		result = new Result();
 		if (keyword.equalsIgnoreCase("Click")) {
+			
 			try {
+				
 				driver.findElement(By.xpath(element)).click();
 				logger.info("Click is performed sucessfully");
-				result = true;
+				result.setMessage("Click is performed sucessfully");
+				result.setResult(true);
 			} catch (Exception e) {
 				logger.error("Click operation was not done successfully : " + e.getMessage());
-				result = false;
+				result.setMessage("Click operation was not done successfully");
+				result.setResult(false);
 			}
 			return result;
 		} else if (keyword.equalsIgnoreCase("Input")) {
 			try {
 				driver.findElement(By.xpath(element)).sendKeys(value);
 				logger.info("Input is performed sucessfully");
-				result = true;
+				result.setMessage("Input is performed sucessfully");
+				result.setResult(true);
 			} catch (Exception e) {
 				logger.error("Not able to enter input : " + e.getMessage());
-				result = false;
+				result.setMessage("Not able to enter input");
+				result.setResult(false);
 			}
 			return result;
 			
@@ -50,10 +56,12 @@ public class CommonFunctionsLib {
 			try {
 			Select dropDown = new Select(driver.findElement(By.xpath(element)));
 			dropDown.selectByVisibleText(value);
-			result = true;
+			result.setMessage("dropdown selection was done successfully");
+			result.setResult(true);
 			} catch (Exception e) {
 				logger.error("dropdown selection was not done successfully : " + e.getMessage());
-				result = false;
+				result.setMessage("dropdown selection was not done successfully");
+				result.setResult(false);
 			}
 			return result;
 
@@ -92,10 +100,12 @@ public class CommonFunctionsLib {
 				boolean radioBtnNewSelectionStatus = expRadioBtn.isSelected();
 				System.out.println("Experience radio Selection status after perform click() event: " + radioBtnNewSelectionStatus);
 				
-				result = true;
+				result.setMessage("radio button selection was done successfully");
+				result.setResult(true);
 			} catch (Exception e) {
 				logger.error("radio button selection was not done successfully : " + e.getMessage());
-				result = false;
+				result.setMessage("radio button selection was not done successfully");
+				result.setResult(false);
 			}
 			return result;
 			
@@ -105,40 +115,48 @@ public class CommonFunctionsLib {
 				driver.findElement(By.id(element)).sendKeys(System.getProperty("user.dir") + value);
 				System.out.println("upload is performed sucessfully ...");
 				logger.info("upload is performed sucessfully");
-				result = true;
+				result.setMessage("upload is performed sucessfully");
+				result.setResult(true);
 			} catch (Exception e) {
 				logger.error("Not able to upload file : " + e.getMessage());
-				result = false;
+				result.setMessage("Not able to upload file");
+				result.setResult(false);
 			}
 			return result;
 		} else if (keyword.equalsIgnoreCase("gettext")) {
 			try {
 			driver.findElement(By.xpath(element)).getText();
 			logger.info("getText is performed sucessfully");
-			result = true;
+			result.setMessage("getText is performed sucessfully");
+			result.setResult(true);
 			} catch (Exception e) {
 				logger.error("getText is not performed sucessfully : " + e.getMessage());
-				result = false;
+				result.setMessage("getText is not performed sucessfully");
+				result.setResult(false);
 			}
 			return result;
 		} else if (keyword.equalsIgnoreCase("url")) {
 			try {
 				driver.get(value);  // 
 				logger.info("Url is opened sucessfully");
-			result = true;
+				result.setMessage("Url is opened sucessfully");
+				result.setResult(true);
 			} catch (Exception e) {
 				logger.error("Url could not opened sucessfully : " + e.getMessage());
-				result = false;
+				result.setMessage("Url could not opened sucessfully");
+				result.setResult(false);
 			}
 			return result;
 		} else if (keyword.equalsIgnoreCase("CloseBrowser")) {
 			try {
 				driver.quit();
 				logger.info("Browser is closed sucessfully");
-				result = true;
+				result.setMessage("Browser is closed sucessfully");
+				result.setResult(true);
 			} catch (Exception e) {
 				logger.error("Browser is not been closed sucessfully : " + e.getMessage());
-				result = false;
+				result.setMessage("Browser is not been closed sucessfully");
+				result.setResult(false);
 			}
 			return result;
 		} else if (keyword.equalsIgnoreCase("sleep")) {
@@ -158,27 +176,33 @@ public class CommonFunctionsLib {
 				}
 				
 				logger.info("sleep is done sucessfully");
-				result = true;
+				result.setMessage("sleep is done sucessfully");
+				result.setResult(true);
 			} catch (Exception e) {
 				logger.error("Not able to do sleep successfully : " + e.getMessage());
-				result = false;
+				result.setMessage("Not able to do sleep successfully");
+				result.setResult(false);
 			}
 			return result;
 		} else if (keyword.equalsIgnoreCase("VerifyText")) {
 
 			if (value.equalsIgnoreCase(driver.findElement(By.xpath(element)).getText())) {
-				logger.info("verify text true");
-				return true;
+				logger.info("Verify text successful");
+				result.setMessage("Verify text successful");
+				result.setResult(true);
 			} else {
-				logger.info("verify text failed");
-				return false;
+				logger.info("Verify text failed");
+				result.setMessage("Verify text failed");
+				result.setResult(false);
 			}
+			return result;
 
 		} else if (keyword.equalsIgnoreCase("Pop")) {
 			// Do nothing
 		}
-
-		return false;
+		result.setMessage("Done");
+		result.setResult(false);
+		return result;
 	}
 
 }
