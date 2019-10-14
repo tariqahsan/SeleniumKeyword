@@ -35,14 +35,13 @@ public class RunTest {
 	@BeforeClass
 	public void beforeClass() {
 
-		System.setProperty("webdriver.chrome.driver", "./webdriver/chromedriver.exe");
 		driver = new Driver();
 
 		// Blank workbook 
 		workbook = new XSSFWorkbook(); 
 
 		// Create a blank sheet 
-		sheet = workbook.createSheet("Chrome Test"); 
+		sheet = workbook.createSheet("Web Browser Test"); 
 
 		// This data needs to be written (Object[]) 
 		data = new TreeMap<String, Object[]>(); 

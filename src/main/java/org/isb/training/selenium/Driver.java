@@ -25,11 +25,12 @@ public class Driver {
 		System.out.println("Configuration File Reader : Driver Path -> " + configFileReader.getDriverPath());
 
 		if(configFileReader.getBrowser().equalsIgnoreCase("Firefox")) {
-			System.setProperty("webdriver.gecko.driver", "./webdriver/geckodriver.exe");
+			System.setProperty("webdriver.gecko.driver", configFileReader.getDriverPath());
 			driver = new FirefoxDriver();
 			logger.info("Mozilla browser started");				
 		}
 		else if(configFileReader.getBrowser().equalsIgnoreCase("IE")) {
+			System.out.println("In IE ...");
 			System.setProperty("webdriver.ie.driver", configFileReader.getDriverPath());
 			driver = new InternetExplorerDriver();
 			logger.info("IE browser started");
