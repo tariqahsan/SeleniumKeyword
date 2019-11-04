@@ -2,6 +2,7 @@ package org.isb.training.selenium;
 
 import java.io.File;
 import java.io.FileOutputStream;
+import java.io.IOException;
 import java.util.Map;
 import java.util.Set;
 import java.util.TreeMap;
@@ -26,27 +27,53 @@ public class RunTest {
 	final static Logger logger = Logger.getLogger(RunTest.class);
 	public static Result result;
 	static XSSFWorkbook workbook;
-	static XSSFSheet sheet;
-	Map<String, Object[]> data;
+	static XSSFSheet sheet1;
+	static XSSFSheet sheet2;
+	static XSSFSheet sheet3;
+	Map<String, Object[]> data1;
+	Map<String, Object[]> data2;
+	Map<String, Object[]> data3;
+
+	private boolean testCaseFlag = true;
 
 	private WebDriver webDriver;
 	Driver driver;
+	FileOutputStream fileOutputStream;
 
 	@BeforeClass
-	public void beforeClass() {
+	public void beforeClass() throws IOException {
 
 		driver = new Driver();
+		fileOutputStream = new FileOutputStream(new File(Constants.FILE_PATH));
 
-		// Blank workbook 
-		workbook = new XSSFWorkbook(); 
+		// Blank workbook
+		workbook = new XSSFWorkbook();
 
-		// Create a blank sheet 
-		sheet = workbook.createSheet("Web Browser Test"); 
+		// Create a blank sheet
+		sheet2 = workbook.createSheet("Test Suite");
+		// Create a blank sheet
+		sheet3 = workbook.createSheet("Test Cases");
+		// Create a blank sheet
+		sheet1 = workbook.createSheet("Test Steps");
 
-		// This data needs to be written (Object[]) 
-		data = new TreeMap<String, Object[]>(); 
+		// This data needs to be written (Object[])
+		data2 = new TreeMap<String, Object[]>();
 		// Header
-		data.put("1", new Object[]{ "Test Step Case Number", "Test Step Description", "Element", "Value", "Keyword", "Test Result", "Test Result Description"}); 
+		data2.put("2",
+				new Object[] { "Serial Number", "Test Suite Description", "Execution Flag", "Test Suite Result" });
+
+		// This data needs to be written (Object[])
+		data1 = new TreeMap<String, Object[]>();
+		// Header
+		data1.put("1", new Object[] { "Test Step Case Number", "Test Step Description", "Element", "Value", "Keyword",
+				"Test Result", "Test Result Description" });
+
+		// This data needs to be written (Object[])
+		data3 = new TreeMap<String, Object[]>();
+		// Header
+		data3.put("3", new Object[] { "Serial Number", "Test Case Number", "Test Case Description", "Execution Flag",
+				"Test Suite Result" });
+
 	}
 
 	@AfterClass
@@ -55,122 +82,165 @@ public class RunTest {
 	}
 
 	@Test
-	public void verifySearchButton() throws Exception {
+	public void readExcel() throws Exception {
 
-		// creating class object for configFileReader 
+		// creating class object for configFileReader
 		ConfigFileReader configFileReader = new ConfigFileReader();
 		ExcelSheetDriver excelSheetDriver = new ExcelSheetDriver();
 		ExcelSheetDriver excelSheetDriver1 = new ExcelSheetDriver();
 		ExcelSheetDriver excelSheetDriver2 = new ExcelSheetDriver();
 
 		// variable name testSuitesheet data type is Sheet
-		Sheet testSuitesheet = excelSheetDriver.getWorksheet(configFileReader.getTestSuite(), configFileReader.getTestSuiteSheet());
+		Sheet testSuitesheet = excelSheetDriver.getWorksheet(configFileReader.getTestSuite(),
+				configFileReader.getTestSuiteSheet());
 		int c = excelSheetDriver.columnCount();
 		int r = excelSheetDriver.rowCount();
 
 		for (int i = 1; i < r; i++) {
 
-			String SNo = excelSheetDriver.readCell(testSuitesheet, 0, i);
-			String Description = excelSheetDriver.readCell(testSuitesheet, 1, i);
-			String ExecutionFlag = excelSheetDriver.readCell(testSuitesheet, 2, i);
-			System.out.println("TestSuite:" + SNo);
-			System.out.println("TestSuite:" + Description);
-			System.out.println("TestSuite:" + ExecutionFlag);
+			String serialNumber = excelSheetDriver.readCell(testSuitesheet, 0, i);
+			String description = excelSheetDriver.readCell(testSuitesheet, 1, i);
+			String executionFlag = excelSheetDriver.readCell(testSuitesheet, 2, i);
+			System.out.println("TestSuite: serialNumber: " + serialNumber);
+			System.out.println("TestSuite: description: " + description);
+			System.out.println("TestSuite: executionFlag: " + executionFlag);
 
-			if(ExecutionFlag.equalsIgnoreCase("Y")){
-				Sheet TestCasesheet =  excelSheetDriver1.getWorksheet(configFileReader.getTestCasePath(), Description);
-				System.out.println("TestCasesheet " + TestCasesheet.toString());
-				int rTestcase = excelSheetDriver1.rowCount();  // 5 rows
-				int cTestCase = excelSheetDriver1.columnCount();  // 4 columns
+			if (executionFlag.equalsIgnoreCase("Y")) {
+				Sheet TestCaseSheet = excelSheetDriver1.getWorksheet(configFileReader.getTestCasePath(), description);
+				int rTestcase = excelSheetDriver1.rowCount(); // 5 rows
+				int cTestCase = excelSheetDriver1.columnCount(); // 4 columns
 
-				for(int k = 1; k < rTestcase; k++)
-				{
-					String snoTestCase = excelSheetDriver1.readCell(TestCasesheet,0, k);
-					String testCaseNumber = excelSheetDriver1.readCell(TestCasesheet,1, k);
-					String testcaseDescription = excelSheetDriver1.readCell(TestCasesheet,2, k);
-					String testcaseExecutionFlag = excelSheetDriver1.readCell(TestCasesheet,3, k);
-					logger.info("TestCases:" + snoTestCase);
-					logger.info("TestCases:" + testCaseNumber);
-					logger.info("TestCases:" + testcaseDescription);
-					logger.info("TestCases:" + testcaseExecutionFlag);
+				for (int k = 1; k < rTestcase; k++) {
+					String testCaseSerialNumber = excelSheetDriver1.readCell(TestCaseSheet, 0, k);
+					String testCaseNumber = excelSheetDriver1.readCell(TestCaseSheet, 1, k);
+					String testCaseDescription = excelSheetDriver1.readCell(TestCaseSheet, 2, k);
+					String testCaseExecutionFlag = excelSheetDriver1.readCell(TestCaseSheet, 3, k);
+					logger.info("TestCases: testCaseSerialNumber: " + testCaseSerialNumber);
+					logger.info("TestCases: testCaseNumber: " + testCaseNumber);
+					logger.info("TestCases: testCaseDescription: " + testCaseDescription);
+					logger.info("TestCases: testCaseExecutionFlag: " + testCaseExecutionFlag);
 
+					if (testCaseExecutionFlag.equalsIgnoreCase("y")) {
 
-					if(testcaseExecutionFlag.equalsIgnoreCase("y")){
-
-						Sheet testStepsheet = excelSheetDriver2.getWorksheet(configFileReader.getTestStepsPath(), Description);
-						int rowTestSteps = excelSheetDriver2.rowCount();   // row count =44
-						int columnTestSteps = excelSheetDriver2.columnCount();  // column counts=6
+						Sheet testStepSheet = excelSheetDriver2.getWorksheet(configFileReader.getTestStepsPath(),
+								description);
+						int testStepsRow = excelSheetDriver2.rowCount(); // row count =44
+						int testStepsColumn = excelSheetDriver2.columnCount(); // column counts=6
 						webDriver = driver.InitateDriver();
 						CommonFunctionsLib comlib = new CommonFunctionsLib(webDriver);
-						for(int w = 1; w < rowTestSteps; w++)
-						{
-							String snoTestSteps = excelSheetDriver.readCell(testStepsheet,0, w);
-							String testStepcaseNumber = excelSheetDriver.readCell(testStepsheet,1, w);
-							String desTestSteps = excelSheetDriver.readCell(testStepsheet,2, w);
-							String element = excelSheetDriver.readCell(testStepsheet,3, w);
-							String value = excelSheetDriver.readCell(testStepsheet,4, w);
-							String keywordTestSteps = excelSheetDriver.readCell(testStepsheet,5, w);
-							if(testCaseNumber.equalsIgnoreCase(testStepcaseNumber)){
-								logger.info("snoTestSteps:" + snoTestSteps);
-								logger.info("desTestSteps:" + desTestSteps);
+						for (int w = 1; w < testStepsRow; w++) {
+							String testStepsSerialNumber = excelSheetDriver.readCell(testStepSheet, 0, w);
+							String testStepCaseNumber = excelSheetDriver.readCell(testStepSheet, 1, w);
+							String testStepsDescription = excelSheetDriver.readCell(testStepSheet, 2, w);
+							String element = excelSheetDriver.readCell(testStepSheet, 3, w);
+							String value = excelSheetDriver.readCell(testStepSheet, 4, w);
+							String testStepsKeyword = excelSheetDriver.readCell(testStepSheet, 5, w);
+							if (testCaseNumber.equalsIgnoreCase(testStepCaseNumber)) {
+								logger.info("testStepsSerialNumber:" + testStepsSerialNumber);
+								logger.info("testStepsDescription:" + testStepsDescription);
 								logger.info("element:" + element);
 								logger.info("value:" + value);
-								logger.info("keywordTestSteps:" + keywordTestSteps);
+								logger.info("testStepsKeyword:" + testStepsKeyword);
 
-								logger.info("Executing performActions Method with the three arguments -" + keywordTestSteps + " " + value + " "+  element);
-								System.out.println("Executing performActions Method with the three arguments -" + "keyword :" + keywordTestSteps + " " + "Value: " + value + " "+ "element: " + element);
-								result = comlib.performActions(keywordTestSteps, value, element);
-								if(result.isResult() == true){
-									data.put(Integer.toString(w), new Object[]{ snoTestSteps, desTestSteps, element, value, keywordTestSteps, Constants.KEYWORD_PASS, result.getMessage() }); 
-									writeToExcel(data);
+								logger.info("Executing performActions Method with the three arguments -"
+										+ testStepsKeyword + " " + value + " " + element);
+								System.out.println("Executing performActions Method with the three arguments -"
+										+ "keyword :" + testStepsKeyword + " " + "Value: " + value + " " + "element: "
+										+ element);
+								result = comlib.performActions(testStepsKeyword, value, element);
+								if (result.isResult() == true) {
+									data1.put(Integer.toString(w),
+											new Object[] { testStepsSerialNumber, testStepsDescription, element, value,
+													testStepsKeyword, Constants.KEYWORD_PASS, result.getMessage() });
+									writeToExcel(data1, sheet1);
 								} else {
-									data.put(Integer.toString(w), new Object[]{ snoTestSteps, desTestSteps, element, value, keywordTestSteps, Constants.KEYWORD_FAIL, result.getMessage() }); 
-									writeToExcel(data);
+									data1.put(Integer.toString(w),
+											new Object[] { testStepsSerialNumber, testStepsDescription, element, value,
+													testStepsKeyword, Constants.KEYWORD_FAIL, result.getMessage() });
+									writeToExcel(data1, sheet1);
+									testCaseFlag = false;
 								}
 							}
 
 						}
 
+						
+					} 
+					if (testCaseExecutionFlag.equalsIgnoreCase("y")) {
+						if (testCaseFlag == true) {
+							System.out.println("In test case execution flag - Y");
+							data3.put(Integer.toString(k), new Object[] { testCaseSerialNumber, testCaseNumber,
+									testCaseDescription, testCaseExecutionFlag, Constants.KEYWORD_PASS });
+							writeToExcel(data3, sheet3);
+						} else {
+							System.out.println("testCaseFlag - N");
+							data3.put(Integer.toString(k), new Object[] { testCaseSerialNumber, testCaseNumber,
+									testCaseDescription, testCaseExecutionFlag, Constants.KEYWORD_FAIL });
+							writeToExcel(data3, sheet3);
+						}
+					} else {
+
+						System.out.println("In test case execution flag - N");
+						data3.put(Integer.toString(k), new Object[] { testCaseSerialNumber, testCaseNumber,
+								testCaseDescription, testCaseExecutionFlag, Constants.KEYWORD_SKIPPED });
+						writeToExcel(data3, sheet3);
 					}
 				}
 
+			}
+			if (executionFlag.equalsIgnoreCase("Y")) {
+				if (testCaseFlag == true) {
+					data2.put(Integer.toString(i),
+							new Object[] { serialNumber, description, executionFlag, Constants.KEYWORD_PASS });
+					writeToExcel(data2, sheet2);
+				} else {
+
+					data2.put(Integer.toString(i),
+							new Object[] { serialNumber, description, executionFlag, Constants.KEYWORD_FAIL });
+					writeToExcel(data2, sheet2);
+				}
+			} else {
+				data2.put(Integer.toString(i),
+						new Object[] { serialNumber, description, executionFlag, Constants.KEYWORD_SKIPPED });
+				writeToExcel(data2, sheet2);
 			}
 		}
 
 		excelSheetDriver.closeworkbook();
 		excelSheetDriver2.closeworkbook();
 		excelSheetDriver1.closeworkbook();
+		try {
+
+			// Writes test results in Workbook
+			workbook.write(fileOutputStream);
+			fileOutputStream.close();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 
 	}
 
-	private void writeToExcel(Map<String, Object[]> data) {
-		// Iterate over data and write to sheet 
-		Set<String> keyset = data.keySet(); 
-		int rownum = 0; 
-		for (String key : keyset) { 
-			// this creates a new row in the sheet 
-			Row row = sheet.createRow(rownum++); 
-			Object[] objArr = data.get(key); 
-			int cellnum = 0; 
-			for (Object obj : objArr) { 
-				// this line creates a cell in the next column of that row 
-				Cell cell = row.createCell(cellnum++); 
-				if (obj instanceof String) 
-					cell.setCellValue((String)obj); 
-				else if (obj instanceof Integer) 
-					cell.setCellValue((Integer)obj); 
-			} 
-		} 
-		try { 
+	private void writeToExcel(Map<String, Object[]> data, XSSFSheet sheet) {
 
-			// this Writes the workbook test result			
-			FileOutputStream out = new FileOutputStream(new File(Constants.FILE_PATH)); 
-			workbook.write(out); 
-			out.close(); 
-		} 
-		catch (Exception e) { 
-			e.printStackTrace(); 
-		} 
-	} 
+		// Iterate over data and write to sheet
+		Set<String> keyset = data.keySet();
+		int rownum = 0;
+		for (String key : keyset) {
+			// this creates a new row in the sheet
+			Row row = sheet.createRow(rownum++);
+			Object[] objArr = data.get(key);
+			int cellnum = 0;
+			for (Object obj : objArr) {
+				// this line creates a cell in the next column of that row
+				Cell cell = row.createCell(cellnum++);
+				if (obj instanceof String) {
+					cell.setCellValue((String) obj);
+				} else if (obj instanceof Integer) {
+					cell.setCellValue((Integer) obj);
+				}
+			}
+		}
+
+	}
 
 }
