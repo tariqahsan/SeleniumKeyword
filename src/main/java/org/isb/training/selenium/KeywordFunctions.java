@@ -35,7 +35,7 @@ public class KeywordFunctions {
 			try {
 				
 				System.out.println("In keyword: " +  keyword + " inputValue: " + inputValue + " webElementValue:  " + webElementValue);
-				runDriver(webElement, webElementValue).sendKeys(inputValue);;
+				runDriver(webElement, webElementValue).click();
 				logger.info("Click is performed sucessfully");
 				result.setMessage("Click is performed sucessfully");
 				result.setResult(true);
@@ -228,8 +228,8 @@ public class KeywordFunctions {
        	 	System.out.println("Web Element is an - > name"); 
        	 	return driver.findElement(By.name(webElementValue));
         case "class" :
-       	 	System.out.println("Web Element is an - > class"); 
-       	 	return driver.findElement(By.name(webElementValue));
+       	 	System.out.println("Web Element is an - > className"); 
+       	 	return driver.findElement(By.className(webElementValue));
         default :
            System.out.println("Invalid web element");
      }
