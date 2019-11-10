@@ -20,7 +20,7 @@ import jxl.Sheet;
 import org.isb.training.selenium.ConfigFileReader;
 import org.isb.training.selenium.Driver;
 import org.isb.training.selenium.config.Constants;
-import org.isb.training.selenium.CommonFunctionsLib;
+import org.isb.training.selenium.KeywordFunctions;
 
 public class RunTest {
 
@@ -65,7 +65,7 @@ public class RunTest {
 		// This data needs to be written (Object[])
 		data1 = new TreeMap<String, Object[]>();
 		// Header
-		data1.put("1", new Object[] { "Test Step Case Number", "Test Step Description", "Element", "Value", "Keyword",
+		data1.put("1", new Object[] { "Test Case Number", "Test Step Number", "Test Step Description", "Element", "Value", "Keyword",
 				"Test Result", "Test Result Description" });
 
 		// This data needs to be written (Object[])
@@ -127,35 +127,50 @@ public class RunTest {
 						int testStepsRow = excelSheetDriver2.rowCount(); // row count =44
 						int testStepsColumn = excelSheetDriver2.columnCount(); // column counts=6
 						webDriver = driver.InitateDriver();
-						CommonFunctionsLib comlib = new CommonFunctionsLib(webDriver);
+						KeywordFunctions comlib = new KeywordFunctions(webDriver);
+						TestStepInputs testStepInputs = new TestStepInputs();
+						
 						for (int w = 1; w < testStepsRow; w++) {
 							String testStepsSerialNumber = excelSheetDriver.readCell(testStepSheet, 0, w);
 							String testStepCaseNumber = excelSheetDriver.readCell(testStepSheet, 1, w);
 							String testStepsDescription = excelSheetDriver.readCell(testStepSheet, 2, w);
-							String element = excelSheetDriver.readCell(testStepSheet, 3, w);
-							String value = excelSheetDriver.readCell(testStepSheet, 4, w);
-							String testStepsKeyword = excelSheetDriver.readCell(testStepSheet, 5, w);
+							String webElement = excelSheetDriver.readCell(testStepSheet, 3, w);
+							String webElementValue = excelSheetDriver.readCell(testStepSheet, 4, w);
+							String inputValue = excelSheetDriver.readCell(testStepSheet, 5, w);
+							String testStepsKeyword = excelSheetDriver.readCell(testStepSheet, 6, w);
+							
+							testStepInputs.setTestStepsSerialNumber(testStepsSerialNumber);
+							testStepInputs.setTestStepCaseNumber(testStepCaseNumber);
+							testStepInputs.setTestStepsDescription(testStepsDescription);
+							testStepInputs.setWebElement(webElement);
+							testStepInputs.setWebElementValue(webElementValue);
+							testStepInputs.setInputValue(inputValue);
+							testStepInputs.setTestStepsKeyword(testStepsKeyword);
+							
 							if (testCaseNumber.equalsIgnoreCase(testStepCaseNumber)) {
 								logger.info("testStepsSerialNumber:" + testStepsSerialNumber);
 								logger.info("testStepsDescription:" + testStepsDescription);
-								logger.info("element:" + element);
-								logger.info("value:" + value);
+								logger.info("webElement:" + webElement);
+								logger.info("webElementValue:" + webElementValue);
+								logger.info("inputValue:" + inputValue);
 								logger.info("testStepsKeyword:" + testStepsKeyword);
 
 								logger.info("Executing performActions Method with the three arguments -"
-										+ testStepsKeyword + " " + value + " " + element);
+										+ testStepsKeyword + " " + inputValue + " " + webElementValue);
 								System.out.println("Executing performActions Method with the three arguments -"
-										+ "keyword :" + testStepsKeyword + " " + "Value: " + value + " " + "element: "
-										+ element);
-								result = comlib.performActions(testStepsKeyword, value, element);
+										+ "keyword :" + testStepsKeyword + " " + "Value: " + inputValue + " " + "webElementValue: "
+										+ webElementValue);
+//								result = comlib.performActions(testStepsKeyword, inputValue, webElementValue);
+								// Run tests
+								result = comlib.runTest(testStepInputs);
 								if (result.isResult() == true) {
 									data1.put(Integer.toString(w),
-											new Object[] { testStepsSerialNumber, testStepsDescription, element, value,
+											new Object[] { testCaseNumber, testStepsSerialNumber, testStepsDescription, webElementValue, inputValue,
 													testStepsKeyword, Constants.KEYWORD_PASS, result.getMessage() });
 									writeToExcel(data1, sheet1);
 								} else {
 									data1.put(Integer.toString(w),
-											new Object[] { testStepsSerialNumber, testStepsDescription, element, value,
+											new Object[] { testCaseNumber, testStepsSerialNumber, testStepsDescription, webElementValue, inputValue,
 													testStepsKeyword, Constants.KEYWORD_FAIL, result.getMessage() });
 									writeToExcel(data1, sheet1);
 									testCaseFlag = false;
@@ -226,6 +241,7 @@ public class RunTest {
 		Set<String> keyset = data.keySet();
 		int rownum = 0;
 		for (String key : keyset) {
+			//System.out.println("key -> " + key);
 			// this creates a new row in the sheet
 			Row row = sheet.createRow(rownum++);
 			Object[] objArr = data.get(key);
@@ -234,8 +250,10 @@ public class RunTest {
 				// this line creates a cell in the next column of that row
 				Cell cell = row.createCell(cellnum++);
 				if (obj instanceof String) {
+					//System.out.println("obj.toString() -> " + obj.toString());
 					cell.setCellValue((String) obj);
 				} else if (obj instanceof Integer) {
+					//System.out.println("(Integer) obj) -> " + obj.toString());
 					cell.setCellValue((Integer) obj);
 				}
 			}
