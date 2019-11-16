@@ -111,6 +111,10 @@ public class RunTest {
 				int cTestCase = excelSheetDriver1.columnCount(); // 4 columns
 
 				for (int k = 1; k < rTestcase; k++) {
+					
+					// Reset testCaseFlag
+					testCaseFlag = true;
+					
 					String testCaseSerialNumber = excelSheetDriver1.readCell(TestCaseSheet, 0, k);
 					String testCaseNumber = excelSheetDriver1.readCell(TestCaseSheet, 1, k);
 					String testCaseDescription = excelSheetDriver1.readCell(TestCaseSheet, 2, k);
